@@ -1,23 +1,39 @@
-# QuestionBox API
+# QuestionBox
 
 ## Description
 
-Modify the QuestionBox application you've been working on this week and add API functionality to it, so that your application can also return JSON data if requested. If you have been working on a team, you can keep working together.
+For this two-day project, your team will build a question and answer platform, similar to Stack Overflow in format, although you can theme it however you like. After a few days, your application will allow people to ask questions, receive answers, and mark an answer as valid. This application should have a front end.
 
-Your application should still work as it currently does, but you should have endpoints that respond to requests for JSON data _in addition_ to the endpoints that serve HTML or JS.
+The application should be styled with [Bootstrap](https://getbootstrap.com/) or another css framework.
 
-The API should allow all the same CRUD functions that the original application does, including user registration and authentication. Now, your application will allow users to register via api and registered users to request an auth token for making API requests that require authentication (creating and editing capabilities). Note that you don't need to create separate classes of users for the regular application and for the api. You just need to be able to create a new user via an API endpoint.
+On the first day, your application should:
 
-Your API should be completely documented for developers using your API. The README for your application is a good place to put this documentation, but you could also consider using a tool like [HackMD](https://hackmd.io/).
+- Allow a user to create a question.
+  - That question should allow for several paragraphs of formattable text. Allow your users to use [Markdown](https://en.wikipedia.org/wiki/Markdown) for authoring questions. [Redcarpet](https://github.com/vmg/redcarpet) is a good gem for rendering Markdown as HTML. [This blog post](https://richonrails.com/articles/rendering-markdown-with-redcarpet) may help as well.
+- Allow questions to have answers.
+- Allow unauthenticated users to view questions and answers.
+- Have registration and login.
+- Every question and every answer should be associated with a user.
+- Allow an authenticated user to create a question or answer an existing question.
+- A user should be able to view all their questions on a user profile page.
+  - Questions cannot be edited once they have been asked (_note_: allowing editing of unanswered questions is listed below as an extra challenge).
+  - A question can be deleted by its author, whether answered or unanswered. If it is deleted, all associated answers should also be deleted.
 
-## Extra Challenges
+On the second day, your application should:
 
-- Deploy your application to Heroku
-- Allow photo or file uploads via API.
-- Send email for new user registrations using an email service add-on through Heroku.
-- Add documentation for developers in the UI itself (i.e., add some routes to your existing non-api application to render documentation in the browser).
-- Implement authentication using a gem. Some options are:
-  - [OmniAuth](https://github.com/omniauth/omniauth)
-  - [Doorkeeper](https://github.com/doorkeeper-gem/doorkeeper)
-  - [AuthLogic](https://github.com/binarylogic/authlogic)
-  - [Devise](https://github.com/omniauth/omniauth)
+- Send an email to a user when someone posts an answer to a question.
+- Paginate the index of questions with [Kaminari](https://github.com/kaminari/kaminari).
+- Allow a user to upload a profile photo.
+- Allow the original author of the question to mark an answer as accepted.
+
+### Extra features and challenges
+
+- Use AJAX to update the page when a user submits an answer to a question.
+- Allow an unanswered question to be edited.
+- Allow the author of an answer to delete or edit that answer.
+- Allow a user to change their password via a link from the user profile page.
+- Deploy to Heroku. Note that this will require a bit more work to allow uploads and emails.
+  - You'll need to configure a storage backend like Amazon S3 in order to upload files.
+  - To send email from your production app you'll need an add-on for Heroku (e.g. SendGrid, MailGun, or SparkPost).
+- Send an email to a user to reset their password if they have forgotten it, and allow them to reset it.
+- What else would make this application better? 🤔

@@ -1,0 +1,13 @@
+      <%= form_with(url: question_answers_path(answer.question).html_safe, local: true, :html => {:class => ''}) do |form| %>
+
+        <div class="form-group">
+          <%= form.text_area :body, :class => 'form-control', value: answer.body %>
+        </div>
+
+        <%= form.hidden_field :user_id, :value => current_user.id %>
+        <%= form.hidden_field :question_id, :value => answer.question.id %>
+
+        <div class="actions">
+          <%= form.submit :class => "btn btn-danger btn-block" %>
+        </div>
+      <% end %>

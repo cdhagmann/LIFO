@@ -1,0 +1,46 @@
+<% questions.each do |question| %>
+
+  <div class='py-2 border-bottom border-danger'>
+    <div class="card">
+      <div class="card-body">
+        <p class="card-text lead"><%= link_to question.title, question %></p>
+        <footer class="text-right">
+          <% if question.user.avatar.attached? %>
+            <%= image_tag(question.user.avatar, width: "40", class: "mr-2") %>
+          <% end %>
+          <%= link_to question.user.username, question.user, :class => '' %>
+        </footer>
+      </div>
+      <div class="card-footer">
+        <small>Last updated
+          <% if (Time.now - question.updated_at).to_i < 60 %>
+            <%= (Time.now - question.created_at).to_i %> sec. ago
+          <% elsif (Time.now - question.updated_at).to_i < 3600 %>
+            <%= (Time.now - question.created_at).to_i / 60 %> min. ago
+          <% elsif (Time.now - question.updated_at).to_i < (3600 * 48) %>
+            <%= (Time.now - question.created_at).to_i / 3600 %> hr. ago
+          <% else %>
+            <%= (Time.now - question.updated_at).to_i / (3600 * 24) %> days ago
+          <% end %>
+          | 
+          <% if question.has_accepted_answer? %>
+          <%= link_to question.answers.count.to_s + ' answers(s)', question, :class => 'badge badge-success p-2 mt-1 mx-1' %>
+          <% else %>
+          <%= link_to question.answers.count.to_s + ' answers(s)', question, :class => 'badge badge-primary p-2 mt-1 mx-1' %>
+          <% end %>
+        </small>
+                          <div class="text-right">
+              <% if logged_in? && (current_user.id == question.user_id || current_user.id == 1) %>
+                <%= link_to '<i class="fas fa-trash text-danger"></i>'.html_safe, question, method: :delete, data: {confirm: 'Are you sure?'} %>
+              <%end%>
+              <% if logged_in? && (current_user.id == question.user_id || current_user.id == 1)  && question.answers.length == 0%>  
+                <%= link_to '<i class="fas fa-pen"></i>'.html_safe, edit_question_path(question) %>
+                <br>
+              <% end %>
+            </div>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>

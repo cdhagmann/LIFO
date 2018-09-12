@@ -1,0 +1,30 @@
+<%= form_with(model: question, local: true, :html => {:class => 'form-signin col-md-6 offset-md-3'}) do |form| %>
+  <% if question.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
+
+      <ul>
+        <% question.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title, :class => "form-control", :placeholder => 'ex. How do I quite Vim?' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :body %>
+    <%= form.text_area :body, :class => "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.hidden_field :user_id, :value => current_user.id %>
+  </div>
+
+  <%= form.submit :class => "btn btn-lg btn-danger btn-block" %>
+  <p class="mt-5 mb-3 text-muted">LIFO &copy; 2018</p>
+<% end %>

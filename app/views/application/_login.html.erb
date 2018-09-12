@@ -1,0 +1,21 @@
+<% if current_user %>
+
+  <div class="btn-group">
+    <%= link_to 'New Question', new_question_path, :class => "btn btn-danger" %>
+    <%= link_to "@" + current_user.username, current_user, :class => "btn btn-light my-2 my-sm-0" %>
+    <%= link_to "Log Out", session_path(session), method: :delete, :class => "btn btn-danger my-2 my-sm-0" %>
+
+  </div>
+
+<% else %>
+
+  <%= form_with(url: session_path, local: true, :html => {:class => "form-inline my-2 my-sm-0"}) do |form| %>
+
+    <%= form.text_field :username, :class => 'form-control mr-sm-2', :placeholder => 'Username' %>
+    <%= form.password_field :password, :class => 'form-control mr-sm-2', :placeholder => 'Password' %>
+    <%= form.submit "Log In", :class => "btn btn-primary my-2 my-sm-0" %>
+    <%= link_to 'Sign Up', new_user_path, :class => "btn btn-danger my-2 my-sm-0 mx-2" %>
+
+  <% end %>
+
+<% end %>

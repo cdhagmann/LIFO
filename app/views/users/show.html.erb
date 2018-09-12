@@ -1,0 +1,30 @@
+<%# recover last comment from questions file for the users %>
+<% @questions = @user.questions %>
+
+<%= render 'header' %>
+
+<% if notice %>
+  <p class="alert alert-success mt-5" role="alert"><%= notice %></p>
+<% end %>
+
+<main role="main" class="container">
+  <div class="jumbotron bg-primary text-white">
+    <h1>@<%= @user.username %></h1>
+    <p class="lead">Member since <%= @user.created_at.year %>.</p>
+    <strong>Number of question: <%= @questions.count %> </strong>
+    <div class='text-white text-right'>
+      <%= link_to 'Change Password', edit_user_path(@user), :class => 'text-white text-right py-0 my-0 px-0 mx-0' %>
+    </div>
+  </div>
+</main>
+
+
+<% @user.questions.any? do %>
+
+  <div class='container'>
+    <%= render 'question_list', questions: @questions %>
+  </div>
+
+<% end %>
+
+
