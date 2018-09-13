@@ -1,4 +1,6 @@
 class VotesController < ApplicationController
+  skip_before_action :verify_authentication
+
   def create
     if current_user
       @vote = Vote.where(user_id: current_user.id, answer_id: params[:vote][:answer_id])[0]
