@@ -10,9 +10,11 @@ Rails.application.routes.draw do
 
 
   namespace :api do
-    resource :token, :controller=>"session", only: :create
+    resource :token, :controller=>"sessions", only: :create
     get 'profile', to: 'users#profile'
-    resources :users
+    resources :users do
+      resources :questions, :controller=>"users/questions"
+    end
     resources :questions do
         resources :answers
     end

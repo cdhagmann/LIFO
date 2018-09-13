@@ -4,13 +4,11 @@ class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
 
   # GET /questions
-  # GET /questions.json
   def index
-    @questions = Question.page(params[:page]).per(10)
+    @questions = Question.order('created_at DESC').page(params[:page]).per(10)
   end
 
   # GET /questions/1
-  # GET /questions/1.json
   def show
     @answers = Answer
                    .left_joins(:votes)
@@ -29,32 +27,23 @@ class QuestionsController < ApplicationController
   end
 
   # POST /questions
-  # POST /questions.json
   def create
     @question = Question.new(question_params)
 
-    respond_to do |format|
-      if @question.save
-        format.html {redirect_to @question, notice: 'Question was successfully created.'}
-        format.json {render :show, status: :created, location: @question}
-      else
-        format.html {render :new}
-        format.json {render json: @question.errors, status: :unprocessable_entity}
-      end
+    if @question.save
+      redirect_to @question, notice: 'Question was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
-    respond_to do |format|
-      if @question.update(question_params)
-        format.html {redirect_to @question, notice: 'Question was successfully updated.'}
-        format.json {render :show, status: :ok, location: @question}
-      else
-        format.html {render :edit}
-        format.json {render json: @question.errors, status: :unprocessable_entity}
-      end
+    if @question.update(question_params)
+      redirect_to @question, notice: 'Question was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -62,10 +51,7 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     @question.destroy
-    respond_to do |format|
-      format.html {redirect_to questions_url, notice: 'Question was successfully destroyed.'}
-      format.json {head :no_content}
-    end
+    redirect_to questions_url, notice: 'Question was successfully destroyed.'
   end
 
   private

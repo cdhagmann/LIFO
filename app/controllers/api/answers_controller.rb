@@ -1,14 +1,14 @@
-class AnswersController < ApplicationController
-  skip_before_action :verify_authentication
-
+class API::AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
 
   # GET /answers
+  # GET /answers.json
   def index
-    @answers = Answer.all
+    @answers = Answer.where("question_id=?",params[:question_id]).page(params[:page]).per(10)
   end
 
   # GET /answers/1
+  # GET /answers/1.json
   def show
   end
 
@@ -22,14 +22,22 @@ class AnswersController < ApplicationController
   end
 
   # POST /answers
+  # POST /answers.json
   def create
     @answer = Answer.new(answer_params)
+
+    respond_to do |format|
       if @answer.save
+        vote = Vote.new(value: 0, user_id: @answer.user_id, answer_id: @answer.id)
+        vote.save
         UserMailer.with(user: @answer.question.user, url: question_url(@answer.question, anchor: 'answer_' + @answer.id.to_s)).alert_email.deliver_now
-        redirect_to @answer.question, notice: 'Answer was successfully created.'
-      else      
-        redirect_to @answer.question
-      end 
+        format.html {redirect_to @answer.question, notice: 'Answer was successfully created.'}
+        format.json {render :show, status: :created, location: @answer}
+      else
+        format.html {redirect_to @answer.question}
+        format.json {render json: @answer.errors, status: :unprocessable_entity}
+      end
+    end
   end
 
   # PATCH/PUT /answers/1

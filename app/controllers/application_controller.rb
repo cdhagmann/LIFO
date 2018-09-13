@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include ActionController::HttpAuthentication::Token::ControllerMethods
+  protect_from_forgery with: :null_session
   helper_method :current_user
   helper_method :logged_in?
   helper_method :token_user

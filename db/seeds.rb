@@ -15,7 +15,7 @@ filename = Dir.glob("*.jpg", base: directory).sample
 user.avatar.attach(io: File.open(File.join(directory, filename)), filename: filename)
 
 
-49.times do
+19.times do
   @user = User.create!(
   username: Faker::Internet.unique.username,
   email: 'cdhagmann+lifo@gmail.com',
@@ -26,18 +26,18 @@ user.avatar.attach(io: File.open(File.join(directory, filename)), filename: file
   @user.avatar.attach(io: File.open(File.join(@directory, @filename)), filename: @filename)
 end
 
-250.times do
+500.times do
   Question.create!(
     title: Faker::Lorem.sentence, 
     body: (Faker::Markdown.sandwich(6, 3) + '<br/>' + Faker::Markdown.inline_code + '<br/>' + Faker::Markdown.sandwich(6, 3)),
-    user_id: 1 + rand(50)
+    user_id: User.pluck(:id).sample
   )
 end
 
-500.times do
+1000.times do
   Answer.create(
-    user_id: 1 + rand(50), 
-    question_id: 1 + rand(250),
+    user_id: User.pluck(:id).sample, 
+    question_id: Question.pluck(:id).sample,
     body: (Faker::Markdown.sandwich(6, 3) + '<br/>' + Faker::Markdown.inline_code + '<br/> ' + Faker::Markdown.sandwich(6, 3)),
   )
 end
@@ -54,7 +54,7 @@ end
 1500.times do
   Vote.create(
     value: [-1,1].sample,
-    user_id: 1 + rand(50), 
-    answer_id: 1 + rand(500)
+    user_id: User.pluck(:id).sample, 
+    answer_id: Answer.pluck(:id).sample
   )
 end
