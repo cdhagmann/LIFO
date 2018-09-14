@@ -6,35 +6,42 @@
 
 <div class='container'>
   <div class='pb-2 border-bottom border-danger'>
-    <div class="card border-danger mb-3">
-      <div class="card-header">
+    <div class="card border-danger mb-3 d-flex">
+      <div class="card-header d-flex justify-content-between">
         <%= @question.title %>
+        <% if current_user && (current_user.id == @question.user_id || current_user.id == 1) %>
+          <div class='d-flex'>
+            <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_path(@question) %>
+            <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, @question, method: :delete, data: {confirm: 'Are you sure?'} %>
+          </div>
+        <% end %>
       </div>
       <div class="card-body">
         <p class="card-text"><%= markdown(@question.body) %></p>
-        <footer class="text-right "><%= link_to "@" + @question.user.username, @question.user, :class => 'text-danger' %></footer>
       </div>
-      <div class="card-footer">
-        <small>Last updated
-          <% if (Time.now - @question.updated_at).to_i < 60 %>
-            <%= (Time.now - @question.created_at).to_i %> sec. ago
-          <% elsif (Time.now - @question.updated_at).to_i < 3600 %>
-            <%= (Time.now - @question.created_at).to_i / 60 %> min. ago
-          <% elsif (Time.now - @question.updated_at).to_i < (3600 * 48) %>
-            <%= (Time.now - @question.created_at).to_i / 3600 %> hr. ago
-          <% else %>
-            <%= (Time.now - @question.updated_at).to_i / (3600 * 24) %> days ago
-          <% end %></small>
-        <div class="text-right">
-          <% if logged_in? && @question.answers.length == 0 && (current_user.id == @question.user_id || current_user.id == 1) %>
-            <%= link_to '<i class="fas fa-trash text-danger"></i>'.html_safe, @question, method: :delete, data: {confirm: 'Are you sure?'} %>
-
-            <%= link_to '<i class="fas fa-pen"></i>'.html_safe, edit_question_path(@question) %>
+      <div class="d-inline-flex justify-content-between align-items-end flex-column align-center">
+        <div class=" d-flex justify-content-around align-items-start mt-4 py-2 px-1 mb-1 ">
+          <% if @question.user.avatar.attached? %>
+            <%= image_tag(@question.user.avatar, width: "40", class: "mr-2 py-1 px-1 ") %>
           <% end %>
+          <div class='d-flex flex-column justify-content-end'>
+            <%= link_to '@' + @question.user.username, @question.user, :class => '' %>
+            <small>Last updated
+              <% if (Time.now - @question.created_at).to_i < 60 %>
+                <%= (Time.now - @question.created_at).to_i %> sec. ago
+              <% elsif (Time.now - @question.created_at).to_i < 3600 %>
+                <%= (Time.now - @question.created_at).to_i / 60 %> min. ago
+              <% elsif (Time.now - @question.created_at).to_i < (3600 * 48) %>
+                <%= (Time.now - @question.created_at).to_i / 3600 %> hr. ago
+              <% else %>
+                <%= (Time.now - @question.created_at).to_i / (3600 * 24) %> days ago
+              <% end %></small>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
   <h2 class='mt-3'>Answers</h2>
 
   <% if current_user %>
@@ -58,9 +65,34 @@
   <% if @question.has_accepted_answer? %>
     <div class='py-2 border-bottom border-danger' id="answer_<%= @question.accepted_answer.id %>">
       <div class="card border-primary mt-5">
-        <div class="card-body">
+        <div class="card-body d-flex">
           <div class="card-text ml-2"><%= markdown(@question.accepted_answer.body).html_safe %></div>
-          <footer class="text-right "><%= link_to "@" + @question.accepted_answer.user.username, @question.accepted_answer.user, :class => 'text-dark' %></footer>
+          <div class="d-inline-flex justify-content-between align-items-end flex-column align-center">
+            <% if current_user && (current_user.id == @question.accepted_answer.user_id || current_user.id == 1) %>
+              <div class='d-flex'>
+                <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_answer_path(@question, @question.accepted_answer) %>
+                <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, question_answer_path(@question, @question.accepted_answer), method: :delete, data: {confirm: 'Are you sure?'} %>
+            <% end %>
+            </div>
+            <div class="text-right d-flex justify-content-around align-items-start mt-4 py-2 px-1 mb-1 ">
+              <% if @question.accepted_answer.user.avatar.attached? %>
+                <%= image_tag(@question.accepted_answer.user.avatar, width: "40", class: "mr-2 py-1 px-1 ") %>
+              <% end %>
+              <div class='d-flex flex-column justify-content-end'>
+                <%= link_to '@' + @question.accepted_answer.user.username, @question.user, :class => '' %>
+                <small>Last updated
+                  <% if (Time.now - @question.accepted_answer.created_at).to_i < 60 %>
+                    <%= (Time.now - @question.accepted_answer.created_at).to_i %> sec. ago
+                  <% elsif (Time.now - @question.accepted_answer.created_at).to_i < 3600 %>
+                    <%= (Time.now - @question.accepted_answer.created_at).to_i / 60 %> min. ago
+                  <% elsif (Time.now - @question.accepted_answer.created_at).to_i < (3600 * 48) %>
+                    <%= (Time.now - @question.accepted_answer.created_at).to_i / 3600 %> hr. ago
+                  <% else %>
+                    <%= (Time.now - @question.accepted_answer.created_at).to_i / (3600 * 24) %> days ago
+                  <% end %></small>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-footer d-flex align-items-center">
           <% if logged_in? && current_user.id == @question.user_id %>
@@ -90,9 +122,34 @@
     <% unless answer.question_accepted_id %>
       <div class='py-2 border-bottom border-danger' id='answer_<%= answer.id %>'>
         <div class="card mt-5">
-          <div class="card-body">
+          <div class="card-body d-flex ">
             <div class="card-text ml-2"><%= markdown(answer.body).html_safe %></div>
-            <footer class="text-right text-danger"><%= link_to "@" + answer.user.username, answer.user, :class => 'text-danger' %></footer>
+            <div class="d-inline-flex justify-content-between align-items-end flex-column align-center">
+              <% if current_user && (current_user.id == answer.user_id || current_user.id == 1) %>
+                <div class='d-flex'>
+                  <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_answer_path(@question, answer) %>
+                  <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are you sure?'} %>
+              <% end %>
+              </div>
+              <div class="text-right d-flex justify-content-around align-items-start mt-4 py-2 px-1 mb-1 ">
+                <% if answer.user.avatar.attached? %>
+                  <%= image_tag(answer.user.avatar, width: "40", class: "mr-2 py-1 px-1 ") %>
+                <% end %>
+                <div class='d-flex flex-column justify-content-end'>
+                  <%= link_to '@' + answer.user.username, @question.user, :class => '' %>
+                  <small>Last updated
+                    <% if (Time.now - answer.created_at).to_i < 60 %>
+                      <%= (Time.now - answer.created_at).to_i %> sec. ago
+                    <% elsif (Time.now - answer.created_at).to_i < 3600 %>
+                      <%= (Time.now - answer.created_at).to_i / 60 %> min. ago
+                    <% elsif (Time.now - answer.created_at).to_i < (3600 * 48) %>
+                      <%= (Time.now - answer.created_at).to_i / 3600 %> hr. ago
+                    <% else %>
+                      <%= (Time.now - answer.created_at).to_i / (3600 * 24) %> days ago
+                    <% end %></small>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="card-footer d-flex align-items-center">
             <% if logged_in? && current_user.id == @question.user_id %>

@@ -10,8 +10,8 @@ user.username = 'admin'
 user.email = 'admin@lifo.com'
 user.password = "admin"
 user.save
-directory = "./sailor_pictures/"
-filename = Dir.glob("*.jpg", base: directory).sample
+directory = "./app/assets/images"
+filename = Dir.glob("*.jpeg", base: directory).sample
 user.avatar.attach(io: File.open(File.join(directory, filename)), filename: filename)
 
 
@@ -21,8 +21,8 @@ user.avatar.attach(io: File.open(File.join(directory, filename)), filename: file
   email: 'cdhagmann+lifo@gmail.com',
   password: "user"
   )
-  @directory = "./sailor_pictures/"
-  @filename = Dir.glob("*.jpg", base: @directory).sample
+  @directory = "./app/assets/images"
+  @filename = Dir.glob("*.jpeg", base: @directory).sample
   @user.avatar.attach(io: File.open(File.join(@directory, @filename)), filename: @filename)
 end
 

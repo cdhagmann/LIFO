@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions
   def index
-    @questions = Question.order('created_at DESC').page(params[:page]).per(10)
+    @questions = Question.order('created_at DESC').page(params[:page]).per(25)
   end
 
   # GET /questions/1
