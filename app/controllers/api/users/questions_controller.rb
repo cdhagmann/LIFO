@@ -1,14 +1,9 @@
 class API::Users::QuestionsController < ApplicationController
-  before_action :set_user, only: [:index, :show, :destroy]
-  before_action :set_question, only: [:show, :destroy]
+  before_action :set_user, only: [:index, :show]
+  before_action :set_question, only: [:show]
 
   def index
     @questions = Question.where("user_id=?",@user.id).page(params[:page]).per(10)
-    # render json: @questions
-  end
-
-  def show
-    # render json: @question
   end
 
   def show

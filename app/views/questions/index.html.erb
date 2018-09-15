@@ -11,13 +11,13 @@
     <%= render 'question_list', questions: @questions %>
   </div>
 
-  
+
   <%= page_entries_info @questions %>
 
-  <div class='td-flex justify-content-center '>
-  <Br>
-  <%= paginate @questions %>
-  <br>
+  <div class='d-flex justify-content-center '>
+    <Br>
+    <%= paginate @questions %>
+    <br>
   </div>
 </div>
 <br>

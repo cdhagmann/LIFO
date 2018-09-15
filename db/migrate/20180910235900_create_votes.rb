@@ -4,7 +4,8 @@ class CreateVotes < ActiveRecord::Migration[5.2]
       t.integer :value
       t.references :user, foreign_key: true
       t.references :answer, foreign_key: true
-
+      t.references :question, foreign_key: true
+      
       t.timestamps
     end
   end

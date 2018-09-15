@@ -5,22 +5,29 @@
         <div class="media py-2 border-bottom border-danger ">
           <div class="d-flex justify-content-center align-items-center flex-column align-center text-center mx-3 h-100" style='width: 5%'>
             <% if question.has_accepted_answer? %>
-              <div class='badge badge-success p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
+              <div class='badge badge-danger text-white p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
                 <% if question.answers.count == 1 %>
-                  <small>answer</small>
+                  <small>answer&nbsp;</small>
                 <% else %>
                   <small>answers</small>
                 <% end %>
               </div>
             <% else %>
-              <div class='badge badge-primary p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
+              <div class='badge badge-secondary text-white p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
                 <% if question.answers.count == 1 %>
-                  <small>answer</small>
+                  <small>answer&nbsp;</small>
                 <% else %>
                   <small>answers</small>
                 <% end %>
               </div>
             <% end %>
+            <div class='badge  text-danger p-2 mt-1 mx-1'><%= question.score %><br>
+              <% if question.score == 1 %>
+                <small>vote&nbsp;</small>
+              <% else %>
+                <small>votes</small>
+              <% end %>
+            </div>
           </div>
           <div class='d-flex media-body'>
             <p class="media-body mb-0 pb-2">

@@ -35,29 +35,24 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    respond_to do |format|
-      if (answer_params[:question_accepted_id] != nil && Answer.exists?(question_accepted_id: answer_params[:question_accepted_id]))
-        format.html {redirect_to @answer.question}
+    if (answer_params[:question_accepted_id] != nil && Answer.exists?(question_accepted_id: answer_params[:question_accepted_id]))
+      redirect_to @answer.question
+    else
+      if @answer.update({question_accepted_id: nil}.merge(answer_params))
+        redirect_to @answer.question, notice: 'Answer was successfully updated.'
       else
-        if @answer.update({question_accepted_id: nil}.merge(answer_params))
-          format.html {redirect_to @answer.question, notice: 'Answer was successfully updated.'}
-          format.json {render :show, status: :ok, location: @answer}
-        else
-          format.html {redirect_to @answer.question}
-          format.json {render json: @answer.errors, status: :unprocessable_entity}
-        end
+        redirect_to @answer.question
       end
     end
   end
+
+
 
   # DELETE /answers/1
   # DELETE /answers/1.json
   def destroy
     @answer.destroy
-    respond_to do |format|
-      format.html {redirect_to @question, notice: 'Answer was successfully destroyed.'}
-      format.json {head :no_content}
-    end
+    redirect_to @question, notice: 'Answer was successfully destroyed.'
   end
 
   private

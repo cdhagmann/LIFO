@@ -21,39 +21,56 @@ class API::AnswersController < ApplicationController
   def edit
   end
 
+
+
   # POST /answers
   # POST /answers.json
   def create
     @answer = Answer.new(answer_params)
-
-    respond_to do |format|
-      if @answer.save
-        vote = Vote.new(value: 0, user_id: @answer.user_id, answer_id: @answer.id)
-        vote.save
-        UserMailer.with(user: @answer.question.user, url: question_url(@answer.question, anchor: 'answer_' + @answer.id.to_s)).alert_email.deliver_now
-        format.html {redirect_to @answer.question, notice: 'Answer was successfully created.'}
-        format.json {render :show, status: :created, location: @answer}
-      else
-        format.html {redirect_to @answer.question}
-        format.json {render json: @answer.errors, status: :unprocessable_entity}
-      end
+    if @answer.save
+      UserMailer.with(user: @answer.question.user, url: question_url(@answer.question, anchor: 'answer_' + @answer.id.to_s)).alert_email.deliver_now
+      render :show, status: :created, location: @answer
+    else
+      render json: @answer.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    respond_to do |format|
-      if (answer_params[:question_accepted_id] != nil && Answer.exists?(question_accepted_id: answer_params[:question_accepted_id]))
-        format.html {redirect_to @answer.question}
+    if @answer.update({question_accepted_id: @answer.question_accepted_id}.merge(answer_params))
+      render :show, status: :ok, location: api_question_answer_url(@answer.question, @answer)
+    else
+      render json: @answer.errors, status: :unprocessable_entity
+    end
+  end
+
+  def accept
+    @answer = Answer.find(params[:answer_id])
+    @question = @answer.question
+    if token_user.id != @answer.question.user.id
+      render json: {error: "You can only accept answers to question which you asked."}, status: :unauthorized
+    elsif (Answer.exists?(question_accepted_id: @question.id))
+      render json: {error: "You can only accept one answer per question."}, status: :conflict
+    else
+      if @answer.update({question_accepted_id: @answer.question.id})
+        render :show, status: :ok, location: api_question_answer_url(question_id: @question.id, id: @answer.id)
       else
-        if @answer.update({question_accepted_id: nil}.merge(answer_params))
-          format.html {redirect_to @answer.question, notice: 'Answer was successfully updated.'}
-          format.json {render :show, status: :ok, location: @answer}
-        else
-          format.html {redirect_to @answer.question}
-          format.json {render json: @answer.errors, status: :unprocessable_entity}
-        end
+        render json: @answer.errors, status: :unprocessable_entity
+      end
+    end
+  end
+
+  def reject
+    @answer = Answer.find(params[:answer_id])
+    @question = @answer.question
+    if token_user.id != @question.user.id
+      render json: {error: "You can only reject answers to question which you asked."}, status: :unauthorized
+    else
+      if @answer.update({question_accepted_id: nil})
+        render :show, status: :ok, location: api_question_answer_url(question_id: @question.id, id: @answer.id)
+      else
+        render json: @answer.errors, status: :unprocessable_entity
       end
     end
   end
@@ -62,10 +79,7 @@ class API::AnswersController < ApplicationController
   # DELETE /answers/1.json
   def destroy
     @answer.destroy
-    respond_to do |format|
-      format.html {redirect_to @question, notice: 'Answer was successfully destroyed.'}
-      format.json {head :no_content}
-    end
+    head :no_content
   end
 
   private
@@ -73,12 +87,12 @@ class API::AnswersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.find(params[:id]) 
     @question = @answer.question
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def answer_params
-    params.permit(:body, :user_id, :question_id, :question_accepted_id)
+    params.permit(:body, :user_id, :question_id)
   end
 end

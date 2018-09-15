@@ -8,8 +8,9 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  # GET /users/1
+  # GET /users/
   def show
+    @questions = Question.where("user_id=?", @user.id).page(params[:page]).per(10)
   end
 
   # GET /users/new

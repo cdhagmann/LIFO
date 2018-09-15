@@ -13,4 +13,14 @@ json.data do
     json.id @question.id
     json.body @question.body
   end
+  json.relationships do
+    json.answers do
+      json.array! @question.answers do |answer|
+        json.data answer, :id, :body
+        json.links do
+          json.self api_question_answer_path(@question, answer)
+        end
+      end
+    end
+  end
 end

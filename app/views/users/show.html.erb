@@ -1,5 +1,5 @@
 <%# recover last comment from questions file for the users %>
-<% @questions = @user.questions %>
+<%# @questions = @user.questions %>
 
 <%= render 'header' %>
 
@@ -23,6 +23,14 @@
 
   <div class='container'>
     <%= render 'question_list', questions: @questions %>
+  </div>
+
+  <%= page_entries_info @questions %>
+
+  <div class='d-flex justify-content-center '>
+  <br>
+  <%= paginate @questions %>
+  <br>
   </div>
 
 <% end %>
