@@ -18,9 +18,13 @@ Rails.application.routes.draw do
       resources :questions, :controller=>"users/questions", only: [:index, :show]
     end
     resources :questions do
+        post 'upvote', to: 'votes#upvote'
+        post 'downvote', to: 'votes#downvote'
         resources :answers do
-         patch 'accept', to: 'answers#accept'
-         patch 'reject', to: 'answers#reject'
+          patch 'accept', to: 'answers#accept'
+          patch 'reject', to: 'answers#reject'
+          post 'upvote', to: 'votes#upvote'
+          post 'downvote', to: 'votes#downvote'
         end
     end
   end 

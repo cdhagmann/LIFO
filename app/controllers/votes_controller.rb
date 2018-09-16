@@ -6,7 +6,7 @@ class VotesController < ApplicationController
       if vote_params.key?(:answer_id)
         @vote = Vote.where(user_id: current_user.id, answer_id: vote_params[:answer_id])[0]
       else
-        @vote = Vote.where(user_id: current_user.id, answer_id: vote_params[:quesetion_id])[0]
+        @vote = Vote.where(user_id: current_user.id, question_id: vote_params[:quesetion_id])[0]
       end
 
       if @vote
