@@ -1,8 +1,10 @@
 class API::VotesController < ApplicationController
   before_action :set_vote
+  before_action :verify_authentication
+
   def upvote
     if @vote
-      if @vote.update({value: [[0, @vote.value+1].max,1].min, user_id: token_user.id}.merge(vote_params))
+      if @vote.update({value: [@vote.value+1,1].min, user_id: token_user.id}.merge(vote_params))
         if @vote.question.nil?
           redirect_to api_question_answer_path(params[:question_id], @vote.answer.id)
         else
@@ -27,7 +29,7 @@ class API::VotesController < ApplicationController
 
   def downvote
     if @vote
-      if @vote.update({value: [[0, @vote.value-1].min,-1].max, user_id: token_user.id}.merge(vote_params))
+      if @vote.update({value: [@vote.value-1, -1].max, user_id: token_user.id}.merge(vote_params))
         if @vote.question_id.nil?
           redirect_to api_question_answer_path(params[:question_id], @vote.answer)
         else

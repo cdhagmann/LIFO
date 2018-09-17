@@ -1,6 +1,6 @@
 class API::QuestionsController < ApplicationController
+  before_action :verify_authentication
   skip_before_action :verify_authentication, only: [:index, :show]
-
   before_action :set_question, only: [:show, :destroy]
 
   def index

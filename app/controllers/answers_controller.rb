@@ -1,6 +1,4 @@
 class AnswersController < ApplicationController
-  skip_before_action :verify_authentication
-
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
 
   # GET /answers

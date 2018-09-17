@@ -1,30 +1,15 @@
 class API::AnswersController < ApplicationController
-  before_action :set_answer, only: [:show, :edit, :update, :destroy]
+  before_action :verify_authentication
+  skip_before_action :verify_authentication, only: [:index, :show]
+  before_action :set_answer, only: [:show, :update, :destroy]
 
-  # GET /answers
-  # GET /answers.json
   def index
     @answers = Answer.where("question_id=?",params[:question_id]).page(params[:page]).per(10)
   end
 
-  # GET /answers/1
-  # GET /answers/1.json
   def show
   end
 
-  # GET /answers/new
-  def new
-    @answer = Answer.new
-  end
-
-  # GET /answers/1/edit
-  def edit
-  end
-
-
-
-  # POST /answers
-  # POST /answers.json
   def create
     @answer = Answer.new(answer_params)
     if @answer.save
@@ -35,8 +20,7 @@ class API::AnswersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /answers/1
-  # PATCH/PUT /answers/1.json
+
   def update
     if @answer.update({question_accepted_id: @answer.question_accepted_id}.merge(answer_params))
       render :show, status: :ok, location: api_question_answer_url(@answer.question, @answer)
@@ -75,8 +59,6 @@ class API::AnswersController < ApplicationController
     end
   end
 
-  # DELETE /answers/1
-  # DELETE /answers/1.json
   def destroy
     @answer.destroy
     head :no_content

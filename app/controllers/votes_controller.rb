@@ -1,12 +1,10 @@
 class VotesController < ApplicationController
-  skip_before_action :verify_authentication
-
   def create
     if current_user
       if vote_params.key?(:answer_id)
         @vote = Vote.where(user_id: current_user.id, answer_id: vote_params[:answer_id])[0]
       else
-        @vote = Vote.where(user_id: current_user.id, question_id: vote_params[:quesetion_id])[0]
+        @vote = Vote.where(user_id: current_user.id, question_id: vote_params[:question_id])[0]
       end
 
       if @vote
@@ -37,6 +35,10 @@ class VotesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def vote_params
-    params.require(:vote).permit(:value, :user_id, :answer_id, :question_id)
+    if params.key?(:answer_id)
+      params.require(:vote).permit(:value, :user_id, :answer_id)
+    else
+      params.require(:vote).permit(:value, :user_id, :question_id)
+    end
   end
 end
