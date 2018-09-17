@@ -1,0 +1,50 @@
+<main role="main">
+  <div class="container">
+    <div class="my-3 p-3 bg-white">
+      <% questions.each do |question| %>
+        <div class="media py-2 border-bottom border-danger ">
+          <div class="d-flex justify-content-center align-items-center flex-column align-center text-center mx-3 h-100" style='width: 5%'>
+            <% if question.has_accepted_answer? %>
+              <div class='badge badge-danger text-white p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
+                <% if question.answers.count == 1 %>
+                  <small>answer&nbsp;</small>
+                <% else %>
+                  <small>answers</small>
+                <% end %>
+              </div>
+            <% else %>
+              <div class='badge badge-secondary text-white p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
+                <% if question.answers.count == 1 %>
+                  <small>answer&nbsp;</small>
+                <% else %>
+                  <small>answers</small>
+                <% end %>
+              </div>
+            <% end %>
+            <div class='badge  text-danger p-2 mt-1 mx-1'><%= question.score %><br>
+              <% if question.score == 1 %>
+                <small>vote&nbsp;</small>
+              <% else %>
+                <small>votes</small>
+              <% end %>
+            </div>
+          </div>
+          <div class='d-flex media-body'>
+            <p class="media-body mb-0 pb-2">
+              <strong class="d-inline text-gray-dark h2"><%= link_to question.title, question %></strong>
+            </p>
+            <div class="d-inline-flex justify-content-between align-items-end flex-column align-center">
+              <% if current_user && (current_user.id == question.user_id ) %>
+                <div class='d-flex'>
+                  <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_path(question) %>
+                  <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, question, method: :delete, data: {confirm: 'Are you sure?'} %>
+                </div>
+              <% end %>
+              <%= render 'user', object: question %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</main>

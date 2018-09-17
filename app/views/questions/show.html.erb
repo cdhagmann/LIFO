@@ -1,0 +1,80 @@
+<%= render 'header' %>
+
+<% if notice %>
+  <p class="alert alert-primary" role="alert"><%= notice %></p>
+<% end %>
+
+<div class='container'>
+  <div class='pb-2 border-bottom border-danger'>
+    <div class="card border-danger mb-3 d-flex">
+      <div class="card-header d-flex justify-content-between">
+        <div class='d-flex justify-content-start align-items-center'>
+          <% @vote = Vote.where('user_id=?', current_user.id).where('question_id=?', @question.id)[0] if current_user %>
+          <div class='d-flex flex-column justify-content-center mx-2'>
+            <% if logged_in? && @vote.nil? %>
+              <%= link_to '<i class="fas fa-sort-up text-gray-dark"></i>'.html_safe, question_votes_path(@question, {vote: {value: 1, user_id: current_user, question_id: @question.id}}), method: :answer %>
+              <span class='text-gray-dark'><%= @question.score %></span>
+              <%= link_to '<i class="fas fa-sort-down text-gray-dark"></i>'.html_safe, question_votes_path(@question, {vote: {value: -1, user_id: current_user, question_id: @question.id}}), method: :answer %>
+            <% elsif logged_in? && @vote.value == 1 %>
+              <i class="fas fa-sort-up text-light"></i>
+              <span class='text-success'><%= @question.score %></span>
+              <%= link_to '<i class="fas fa-sort-down text-gray-dark"></i>'.html_safe, question_vote_path(@question, @vote), method: :delete %>
+            <% elsif logged_in? && @vote.value == -1 %>
+              <%= link_to '<i class="fas fa-sort-up text-gray-dark"></i>'.html_safe, question_vote_path(@question, @vote), method: :delete %>
+              <span class='text-danger'><%= @question.score %></span>
+              <i class="fas fa-sort-down text-light"></i>
+            <% else %>
+              <span class='text-gray-dark'><%= @question.score %></span>
+            <% end %>
+          </div>
+          <h3><%= @question.title %></h3>
+        </div>
+        <% if current_user && (current_user.id == @question.user_id ) %>
+          <div class='d-flex'>
+            <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_path(@question) %>
+            <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, @question, method: :delete, data: {confirm: 'Are you sure?'} %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="card-body">
+
+        <p class="card-text"><%= markdown(@question.body) %></p>
+      </div>
+      <div class="d-inline-flex justify-content-between align-items-end flex-column align-center m-2">
+        <%= render 'user', object: @question %>
+      </div>
+    </div>
+  </div>
+
+  <h2 class='mt-3'>Answers</h2>
+
+  <% if current_user %>
+    <div class='pb-2 border-bottom border-danger'>
+      <%= form_with(url: question_answers_path(@question).html_safe, local: true, :html => {:class => ''}) do |form| %>
+
+        <div class="form-group">
+          <%= form.text_area :body, :class => 'form-control' %>
+        </div>
+
+        <%= form.hidden_field :user_id, :value => current_user.id %>
+        <%= form.hidden_field :question_id, :value => @question.id %>
+
+        <div class="actions">
+          <%= form.submit :class => "btn btn-danger btn-block" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @question.has_accepted_answer? %>
+    <%= render 'answer', answer: @question.accepted_answer %>
+  <% end %>
+
+  <% @answers.sort_by(&:score).reverse.each do |answer| %>
+    <% unless answer.accepted? %>
+      <%= render 'answer', answer: answer %>
+    <% end %>
+  <% end %>
+
+</div>

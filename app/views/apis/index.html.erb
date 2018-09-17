@@ -1,0 +1,222 @@
+<%= render 'header' %>
+
+<div class='container mx-auto'>
+  <h1>API</h1>
+
+  <% if notice %>
+    <p><%= notice %></p>
+  <% end %>
+
+  <% if false %>
+  <pre><code class="JSON language-JSON">
+  
+  </code></pre>
+  <% end %>
+
+  <div id="doc" class="table table-responsive mx-auto table-hover markdown-body container-fluid" style="position: relative;">
+    <table>
+      <thead class='thead-dark'>
+      <tr>
+        <th>VERB</th>
+        <th>PATH</th>
+        <th>DESCRIPTION</th>
+        <th>AUTH</th>
+        <th>OWNER</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/token?username=:username&password=:password</td>
+        <td>Get API Token for use with API</td>
+        <td align='center'></td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/profile</td>
+        <td>Get your tokened user</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/users/:user_id/questions</td>
+        <td>Get questions asked by specified user</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/users/:user_id/questions/:id</td>
+        <td>Get specific question from specified user</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/users</td>
+        <td>Get all users</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/users</td>
+        <td>Create a new user</td>
+        <td align='center'></td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/users/:id</td>
+        <td>Get specified user</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-info'>
+        <td>PATCH</td>
+        <td>/api/users/:id</td>
+        <td>Update Password</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-danger'>
+        <td>DELETE</td>
+        <td>/api/users/:id</td>
+        <td>Delete your user</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-info'>
+        <td>PATCH</td>
+        <td>/api/questions/:question_id/answers/:answer_id/accept</td>
+        <td>Accept the specified answer for a specified question which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-info'>
+        <td>PATCH</td>
+        <td>/api/questions/:question_id/answers/:answer_id/reject</td>
+        <td>Reject the specified answer for a specified question which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/questions/:question_id/answers</td>
+        <td>Get list of answers for specifed question</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/questions/:question_id/answers</td>
+        <td>Submit answer to specified question</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/questions/:question_id/answers/:id</td>
+        <td>Get specific answer to specified question</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-info'>
+        <td>PATCH</td>
+        <td>/api/questions/:question_id/answers/:id</td>
+        <td>Edit answer which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-warning'>
+        <td>PUT</td>
+        <td>/api/questions/:question_id/answers/:id</td>
+        <td>Edit answer which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-danger'>
+        <td>DELETE</td>
+        <td>/api/questions/:question_id/answers/:id</td>
+        <td>Delete answer which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/questions/:question_id/answers/:answer_id/upvote</td>
+        <td>Upvote an answer</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/questions/:question_id/answers/:answer_id/downvote</td>
+        <td>Downvote an answer</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/questions</td>
+        <td>Get a list of all questions</td>
+        <td align='center'></td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/questions</td>
+        <td>Post a question</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/questions/:id</td>
+        <td>Get a specific question</td>
+        <td align='center'></td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-info'>
+        <td>PATCH</td>
+        <td>/api/questions/:id</td>
+        <td>Update a question which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-warning'>
+        <td>PUT</td>
+        <td>/api/questions/:id</td>
+        <td>Update a question which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-danger'>
+        <td>DELETE</td>
+        <td>/api/questions/:id</td>
+        <td>Delete a question which you own</td>
+        <td align='center'>✓</td>
+        <td align='center'>✓</td>
+      </tr>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/questions/:question_id/upvote</td>
+        <td>Upvote a question</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-primary'>
+        <td>POST</td>
+        <td>/api/questions/:question_id/downvote</td>
+        <td>Downvote a question</td>
+        <td align='center'>✓</td>
+        <td align='center'></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
