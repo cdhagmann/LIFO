@@ -4,7 +4,7 @@ class API::VotesController < ApplicationController
 
   def upvote
     if @vote
-      if @vote.update({value: [@vote.value+1,1].min, user_id: token_user.id}.merge(vote_params))
+      if @vote.update({value: [@vote.value + 1, 1].min, user_id: token_user.id}.merge(vote_params))
         if @vote.question.nil?
           redirect_to api_question_answer_path(params[:question_id], @vote.answer.id)
         else
@@ -29,7 +29,7 @@ class API::VotesController < ApplicationController
 
   def downvote
     if @vote
-      if @vote.update({value: [@vote.value-1, -1].max, user_id: token_user.id}.merge(vote_params))
+      if @vote.update({value: [@vote.value - 1, -1].max, user_id: token_user.id}.merge(vote_params))
         if @vote.question_id.nil?
           redirect_to api_question_answer_path(params[:question_id], @vote.answer)
         else
@@ -40,15 +40,15 @@ class API::VotesController < ApplicationController
       end
     else
       @vote = Vote.new({value: -1, user_id: token_user.id}.merge(vote_params))
-        if @vote.save
-          if @vote.question.nil?
-            redirect_to api_question_answer_path(@vote.answer)
-          else
-            redirect_to api_question_path(@vote.question)
-          end
+      if @vote.save
+        if @vote.question.nil?
+          redirect_to api_question_answer_path(@vote.answer)
         else
-          render json: @vote.errors, status: :unprocessable_entity
+          redirect_to api_question_path(@vote.question)
         end
+      else
+        render json: @vote.errors, status: :unprocessable_entity
+      end
     end
   end
 

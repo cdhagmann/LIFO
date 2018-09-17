@@ -1,8 +1,10 @@
 <nav class="d-flex flex-column justify-content-center justify-content-sm-between align-items-center flex-sm-row navbar fixed-top navbar-dark bg-dark">
   <div class='d-flex flex-row justify-content-center'>
-    <%= link_to 'LIF', root_path, :class => 'navbar-brand py-0 my-0 px-0 mx-0 text-danger font-weight-bold h1' %>
-    <%= link_to image_tag('favicon.png', :size => '20'), root_path, :class => 'py-0 my-0 px-0 mx-0' %>
+    <%= link_to 'LIF', session[:return_to] , :class => 'navbar-brand py-0 my-0 px-0 mx-0 text-danger font-weight-bold h1' %>
+    <%= link_to image_tag('favicon.png', :size => '20'), session[:return_to], :class => 'py-0 my-0 px-0 mx-0' %>
     <%= link_to 'API', api_path, :class=> 'text-danger mx-5 h6' %>
   </div>
-  <%= render 'login' %>
+  <div id='login'>
+    <%= render 'login' %>
+  </div>
 </nav>

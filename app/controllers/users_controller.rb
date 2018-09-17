@@ -52,6 +52,7 @@ class UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
+    session[:return_to] = root_path
     @user = User.find(params[:id])
   end
 

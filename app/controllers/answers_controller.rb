@@ -22,12 +22,12 @@ class AnswersController < ApplicationController
   # POST /answers
   def create
     @answer = Answer.new(answer_params)
-      if @answer.save
-        UserMailer.with(user: @answer.question.user, url: question_url(@answer.question, anchor: 'answer_' + @answer.id.to_s)).alert_email.deliver_now
-        redirect_to @answer.question, notice: 'Answer was successfully created.'
-      else      
-        redirect_to @answer.question
-      end 
+    if @answer.save
+      UserMailer.with(user: @answer.question.user, url: question_url(@answer.question, anchor: 'answer_' + @answer.id.to_s)).alert_email.deliver_now
+      redirect_to @answer.question, notice: 'Answer was successfully created.'
+    else
+      redirect_to @answer.question
+    end
   end
 
   # PATCH/PUT /answers/1
@@ -43,7 +43,6 @@ class AnswersController < ApplicationController
       end
     end
   end
-
 
 
   # DELETE /answers/1

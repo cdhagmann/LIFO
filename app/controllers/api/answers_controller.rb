@@ -4,7 +4,7 @@ class API::AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :update, :destroy]
 
   def index
-    @answers = Answer.where("question_id=?",params[:question_id]).page(params[:page]).per(10)
+    @answers = Answer.where("question_id=?", params[:question_id]).page(params[:page]).per(10)
   end
 
   def show
@@ -69,7 +69,7 @@ class API::AnswersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_answer
-    @answer = Answer.find(params[:id]) 
+    @answer = Answer.find(params[:id])
     @question = @answer.question
   end
 

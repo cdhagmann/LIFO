@@ -3,16 +3,14 @@ class QuestionsController < ApplicationController
 
   # GET /questions
   def index
+    session[:return_to] = root_path
     @questions = Question.order('created_at DESC').page(params[:page]).per(25)
   end
 
   # GET /questions/1
   def show
-    @answers = Answer
-                   .left_joins(:votes)
-                   .group(:id)
-                   .order('SUM(votes.value) DESC')
-                   .where(question_id: @question.id)
+    session[:return_to] = request.referer
+    @answers = @question.answers
   end
 
   # GET /questions/new
@@ -36,7 +34,6 @@ class QuestionsController < ApplicationController
   end
 
   # PATCH/PUT /questions/1
-  # PATCH/PUT /questions/1.json
   def update
     if @question.update(question_params)
       redirect_to @question, notice: 'Question was successfully updated.'
@@ -46,7 +43,6 @@ class QuestionsController < ApplicationController
   end
 
   # DELETE /questions/1
-  # DELETE /questions/1.json
   def destroy
     @question.destroy
     redirect_to questions_url, notice: 'Question was successfully destroyed.'
