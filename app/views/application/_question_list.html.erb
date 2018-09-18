@@ -2,8 +2,8 @@
   <div class="container">
     <div class="my-3 p-3 bg-white">
       <% questions.each do |question| %>
-        <div class="media py-2 border-bottom border-danger ">
-          <div class="d-flex justify-content-center align-items-center flex-column align-center text-center mx-3 h-100" style='width: 5%'>
+        <div class="d-flex flex-column justify-content-center justify-content-sm-between align-items-center flex-sm-row media py-2 border-bottom border-danger ">
+          <div class="d-flex justify-content-center align-items-center flex-row flex-sm-column align-center text-center mx-3 h-100" style='width: 5%'>
             <% answer_count = question.answer_count %>
             <% if question.accepted %>
               <div class='badge badge-danger text-white p-2 mt-1 mx-1'><%= answer_count %><br>
@@ -30,9 +30,9 @@
               <% end %>
             </div>
           </div>
-          <div class='d-flex media-body'>
+          <div class='d-flex flex-column flex-sm-row media-body'>
             <p class="media-body mb-0 pb-2">
-              <strong class="d-inline text-gray-dark h2"><%= link_to question.title, question %></strong>
+              <strong class="d-inline text-gray-dark h4"><%= link_to question.title, question %></strong>
             </p>
             <div class="d-inline-flex justify-content-between align-items-end flex-column align-center">
               <% if current_user && (current_user.id == question.user_id ) %>
