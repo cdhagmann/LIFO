@@ -4,25 +4,26 @@
       <% questions.each do |question| %>
         <div class="media py-2 border-bottom border-danger ">
           <div class="d-flex justify-content-center align-items-center flex-column align-center text-center mx-3 h-100" style='width: 5%'>
-            <% if question.has_accepted_answer? %>
-              <div class='badge badge-danger text-white p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
-                <% if question.answers.count == 1 %>
+            <% answer_count = question.answer_count %>
+            <% if question.accepted %>
+              <div class='badge badge-danger text-white p-2 mt-1 mx-1'><%= answer_count %><br>
+                <% if answer_count == 1 %>
                   <small>answer&nbsp;</small>
                 <% else %>
                   <small>answers</small>
                 <% end %>
               </div>
             <% else %>
-              <div class='badge badge-secondary text-white p-2 mt-1 mx-1'><%= question.answers.count.to_s %><br>
-                <% if question.answers.count == 1 %>
+              <div class='badge badge-secondary text-white p-2 mt-1 mx-1'><%= answer_count %><br>
+                <% if answer_count == 1 %>
                   <small>answer&nbsp;</small>
                 <% else %>
                   <small>answers</small>
                 <% end %>
               </div>
             <% end %>
-            <div class='badge  text-danger p-2 mt-1 mx-1'><%= question.score %><br>
-              <% if question.score == 1 %>
+            <div class='badge  text-danger p-2 mt-1 mx-1'><%= question.vote_count %><br>
+              <% if question.vote_count == 1 %>
                 <small>vote&nbsp;</small>
               <% else %>
                 <small>votes</small>
@@ -40,7 +41,22 @@
                   <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, question, method: :delete, data: {confirm: 'Are you sure?'} %>
                 </div>
               <% end %>
-              <%= render 'user', object: question %>
+              <div class="border bg-light d-flex justify-content-around align-items-start mt-4 py-2 px-1 mb-1 ">
+                  <div class='d-flex flex-column justify-content-end'>
+                    <%= link_to '@' + question.username, user_path(question.user_id), :class => '' %>
+                    <small>Last updated
+                      <% if (Time.now - question.created_at).to_i < 60 %>
+                        <%= (Time.now - question.created_at).to_i %> sec. ago
+                      <% elsif (Time.now - question.created_at).to_i < 3600 %>
+                        <%= (Time.now - question.created_at).to_i / 60 %> min. ago
+                      <% elsif (Time.now - question.created_at).to_i < (3600 * 48) %>
+                        <%= (Time.now - question.created_at).to_i / 3600 %> hr. ago
+                      <% else %>
+                        <%= (Time.now - question.created_at).to_i / (3600 * 24) %> days ago
+                      <% end %>
+                    </small>
+                  </div>
+                </div>
             </div>
           </div>
         </div>

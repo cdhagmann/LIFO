@@ -5,31 +5,38 @@
 <% end %>
 
 <div class='container'>
-  <div class='pb-2 border-bottom border-danger'>
+  <div class='pb-2'>
     <div class="card border-danger mb-3 d-flex">
       <div class="card-header d-flex justify-content-between">
         <div class='d-flex justify-content-start align-items-center'>
           <% @vote = Vote.where('user_id=?', current_user.id).where('question_id=?', @question.id)[0] if current_user %>
-          <div class='d-flex flex-column justify-content-center mx-2'>
-            <% if logged_in? && @vote.nil? %>
-              <%= link_to '<i class="fas fa-sort-up text-gray-dark"></i>'.html_safe, question_votes_path(@question, {vote: {value: 1, user_id: current_user, question_id: @question.id}}), method: :answer %>
-              <span class='text-gray-dark'><%= @question.score %></span>
-              <%= link_to '<i class="fas fa-sort-down text-gray-dark"></i>'.html_safe, question_votes_path(@question, {vote: {value: -1, user_id: current_user, question_id: @question.id}}), method: :answer %>
-            <% elsif logged_in? && @vote.value == 1 %>
-              <i class="fas fa-sort-up text-light"></i>
-              <span class='text-success'><%= @question.score %></span>
-              <%= link_to '<i class="fas fa-sort-down text-gray-dark"></i>'.html_safe, question_vote_path(@question, @vote), method: :delete %>
-            <% elsif logged_in? && @vote.value == -1 %>
-              <%= link_to '<i class="fas fa-sort-up text-gray-dark"></i>'.html_safe, question_vote_path(@question, @vote), method: :delete %>
-              <span class='text-danger'><%= @question.score %></span>
-              <i class="fas fa-sort-down text-light"></i>
-            <% else %>
-              <span class='text-gray-dark'><%= @question.score %></span>
-            <% end %>
-          </div>
-          <h3><%= @question.title %></h3>
+          <% if logged_in? && @vote.nil? %>
+            <div class='badge badge-secondary d-flex flex-column justify-content-center align-items-center'>
+              <%= link_to '<i class="fas fa-sort-up text-light"></i>'.html_safe, question_votes_path(@question, {vote: {value: 1, user_id: current_user, question_id: @question.id}}), method: :answer %>
+              <span class='text-light'><%= @question.score %></span>
+              <%= link_to '<i class="fas fa-sort-down text-light"></i>'.html_safe, question_votes_path(@question, {vote: {value: -1, user_id: current_user, question_id: @question.id}}), method: :answer %>
+            </div>
+          <% elsif logged_in? && @vote.value == 1 %>
+            <div class='badge badge-success d-flex flex-column justify-content-center align-items-center'>
+              <i class="fas fa-sort-up text-success"></i>
+              <span class='text-light'><%= @question.score %></span>
+              <%= link_to '<i class="fas fa-sort-down text-light"></i>'.html_safe, question_vote_path(@question, @vote), method: :delete %>
+            </div>
+          <% elsif logged_in? && @vote.value == -1 %>
+            <div class='badge badge-danger d-flex flex-column justify-content-center align-items-center'>
+              <%= link_to '<i class="fas fa-sort-up text-light"></i>'.html_safe, question_vote_path(@question, @vote), method: :delete %>
+              <span class='text-light'><%= @question.score %></span>
+              <i class="fas fa-sort-down text-danger"></i>
+            </div>
+          <% else %>
+            <div class='badge badge-secondary d-flex flex-column justify-content-center align-items-center'>
+              <span class='badge text-light'><%= answer.score %></span>
+            </div>
+          <% end %>
+
+          <h3 class='ml-2'><%= @question.title %></h3>
         </div>
-        <% if current_user && (current_user.id == @question.user_id ) %>
+        <% if current_user && (current_user.id == @question.user_id) %>
           <div class='d-flex'>
             <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_path(@question) %>
             <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, @question, method: :delete, data: {confirm: 'Are you sure?'} %>

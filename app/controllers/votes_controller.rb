@@ -1,12 +1,8 @@
 class VotesController < ApplicationController
+  before_action :set_vote, only: :create
+
   def create
     if current_user
-      if vote_params.key?(:answer_id)
-        @vote = Vote.where(user_id: current_user.id, answer_id: vote_params[:answer_id])[0]
-      else
-        @vote = Vote.where(user_id: current_user.id, question_id: vote_params[:question_id])[0]
-      end
-
       if @vote
         @vote.update(vote_params)
       else
@@ -40,6 +36,14 @@ class VotesController < ApplicationController
       params.require(:vote).permit(:value, :user_id, :answer_id)
     else
       params.require(:vote).permit(:value, :user_id, :question_id)
+    end
+  end
+
+  def set_vote
+    if vote_params.key?(:answer_id)
+      @vote = Vote.where(user_id: current_user.id, answer_id: vote_params[:answer_id])[0]
+    else
+      @vote = Vote.where(user_id: current_user.id, question_id: vote_params[:question_id])[0]
     end
   end
 end
