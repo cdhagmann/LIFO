@@ -17,7 +17,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1
   def show
-    session[:return_to] = request.referer
+    session[:return_to] = request.referer if request.referer != request.url
     @answers = @question.answers
   end
 

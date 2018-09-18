@@ -22,15 +22,15 @@
 <% @user.questions.any? do %>
 
   <div class='container'>
-    <%= render 'question_list', questions: @questions.sort_by(&:score).reverse %>
+    <%= render 'question_list', questions: @questions %>
   </div>
 
   <%= page_entries_info @questions %>
 
   <div class='d-flex justify-content-center '>
-  <br>
-  <%= paginate @questions %>
-  <br>
+    <br>
+    <%= paginate @questions %>
+    <br>
   </div>
 
 <% end %>

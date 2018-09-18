@@ -36,7 +36,7 @@
 
           <h3 class='ml-2'><%= @question.title %></h3>
         </div>
-        <% if current_user && (current_user.id == @question.user_id ) %>
+        <% if current_user && (current_user.id == @question.user_id) %>
           <div class='d-flex'>
             <%= link_to '<i class="fas fa-pen p-1"></i>'.html_safe, edit_question_path(@question) %>
             <%= link_to '<i class="fas fa-trash text-danger p-1"></i>'.html_safe, @question, method: :delete, data: {confirm: 'Are you sure?'} %>
