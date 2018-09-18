@@ -1,9 +1,11 @@
+<% @user = object.user %>
+
 <div class="border bg-light d-flex justify-content-around align-items-start mt-4 py-2 px-1 mb-1 ">
-  <% if object.user.avatar.attached? %>
-    <%= image_tag(object.user.avatar, width: "40", class: "mr-2 py-1 px-1 ") %>
+  <% if @user.avatar.attached? %>
+    <%= image_tag(@user.avatar, width: "40", class: "mr-2 py-1 px-1 ") %>
   <% end %>
   <div class='d-flex flex-column justify-content-end'>
-    <%= link_to '@' + object.user.username, object.user, :class => '' %>
+    <%= link_to '@' + @user.username, @user, :class => '' %>
     <small>Last updated
       <% if (Time.now - object.created_at).to_i < 60 %>
         <%= (Time.now - object.created_at).to_i %> sec. ago
