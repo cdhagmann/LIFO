@@ -4,15 +4,19 @@ class QuestionsController < ApplicationController
   # GET /questions
   def index
     session[:return_to] = root_path
-    @questions = Question.left_outer_joins(:votes).left_outer_joins(:accepted_answer).left_outer_joins(:user)
-                   .select('questions.*, 
+    if params[:search]
+      @questions = Question.search(params[:search]).includes(:user).page(params[:page]).per(25)
+    else
+      @questions = Question.left_outer_joins(:votes).left_outer_joins(:accepted_answer).left_outer_joins(:user)
+                       .select('questions.*,
                             SUM(Coalesce(votes.value,0)) as vote_count, 
                             CASE WHEN max(answers.question_accepted_id) is NOT NULL THEN TRUE ELSE FALSE END as accepted,
                             MAX(users.username) as username,
                             (SELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = "questions"."id" ) as answer_count')
-                   .group(:id)
-                   .order('vote_count DESC')
-                   .order('created_At DESC').page(params[:page]).per(25)
+                       .group(:id)
+                       .order('vote_count DESC')
+                       .order('created_At DESC').page(params[:page]).per(25)
+    end
   end
 
   # GET /questions/1
