@@ -32,9 +32,9 @@
               <% end %>
             </div>
           </div>
-          <div class='d-flex media-body'>
+          <div class='d-flex flex-column flex-sm-row media-body'>
             <p class="media-body mb-0 pb-2">
-              <strong class="d-inline text-gray-dark h2"><%= link_to question.title, question %></strong>
+              <strong class="d-inline text-gray-dark h4"><%= link_to question.title, question %></strong>
             </p>
             <div class="d-inline-flex justify-content-between align-items-end flex-column align-center">
               <% if current_user && (current_user.id == question.user_id) %>
