@@ -2,8 +2,8 @@
   <div class="container">
     <div class="my-3 p-3 bg-white">
       <% questions.each do |question| %>
-        <div class="media py-2 border-bottom border-danger ">
-          <div class="d-flex justify-content-center align-items-center flex-column align-center text-center mx-3 h-100" style='width: 5%'>
+        <div class="media py-2 border-bottom border-danger d-flex flex-column justify-content-center justify-content-sm-between align-items-center flex-sm-row">
+          <div class="d-flex justify-content-center align-items-center flex-md-column align-center text-center mx-3 h-100" style='width: 5%'>
             <% answer_count = question.respond_to?(:answer_count) ? question.answer_count : question.answers.count %>
             <% accepted = question.respond_to?(:accepted) ? question.accepted : question.has_accepted_answer? %>
             <% if accepted %>
