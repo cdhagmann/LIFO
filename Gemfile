@@ -32,7 +32,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
+# Use delayed_job for background job scheduling
+gem 'delayed_job'
+gem 'delayed_job_active_record'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 # Use redcarpet for Markdown Rendering
