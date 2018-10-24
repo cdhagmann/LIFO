@@ -2,10 +2,11 @@
   <div class="container">
     <div class="my-3 p-3 bg-white">
       <% questions.each do |question| %>
-        <div class="d-flex flex-column justify-content-center justify-content-sm-between align-items-center flex-sm-row media py-2 border-bottom border-danger ">
-          <div class="d-flex justify-content-center align-items-center flex-row flex-sm-column align-center text-center mx-3 h-100" style='width: 5%'>
-            <% answer_count = question.answer_count %>
-            <% if question.accepted %>
+        <div class="media py-2 border-bottom border-danger d-flex flex-column justify-content-center justify-content-sm-between align-items-center flex-sm-row">
+          <div class="d-flex justify-content-center align-items-center flex-md-column align-center text-center mx-3 h-100" style='width: 5%'>
+            <% answer_count = question.respond_to?(:answer_count) ? question.answer_count : question.answers.count %>
+            <% accepted = question.respond_to?(:accepted) ? question.accepted : question.has_accepted_answer? %>
+            <% if accepted %>
               <div class='badge badge-danger text-white p-2 mt-1 mx-1'><%= answer_count %><br>
                 <% if answer_count == 1 %>
                   <small>answer&nbsp;</small>
@@ -22,8 +23,9 @@
                 <% end %>
               </div>
             <% end %>
-            <div class='badge  text-danger p-2 mt-1 mx-1'><%= question.vote_count %><br>
-              <% if question.vote_count == 1 %>
+            <% vote_count = question.respond_to?(:vote_count) ? question.vote_count : question.votes.count %>
+            <div class='badge  text-danger p-2 mt-1 mx-1'><%= vote_count %><br>
+              <% if vote_count == 1 %>
                 <small>vote&nbsp;</small>
               <% else %>
                 <small>votes</small>
@@ -45,8 +47,9 @@
                 <% if question.user.avatar.attached? %>
                   <%= image_tag(question.user.avatar, width: "40", class: "mr-2 py-1 px-1 ") %>
                 <% end %>
+                <% username = question.respond_to?(:username) ? question.username : question.user.username %>
                 <div class='d-flex flex-column justify-content-end'>
-                  <%= link_to '@' + question.username, user_path(question.user_id), :class => '' %>
+                  <%= link_to '@' + username, user_path(question.user_id), :class => '' %>
                   <small>Last updated
                     <% if (Time.now - question.created_at).to_i < 60 %>
                       <%= (Time.now - question.created_at).to_i %> sec. ago

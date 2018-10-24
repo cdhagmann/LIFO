@@ -162,7 +162,21 @@
       <tr class='table-success'>
         <td>GET</td>
         <td>/api/questions</td>
-        <td>Get a list of all questions</td>
+        <td>Get a paginated list of all questions</td>
+        <td align='center'></td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/questions?page=2</td>
+        <td>Get the second page of the list of all questions</td>
+        <td align='center'></td>
+        <td align='center'></td>
+      </tr>
+      <tr class='table-success'>
+        <td>GET</td>
+        <td>/api/questions?search=foo</td>
+        <td>Get a list of all questions with foo in the title</td>
         <td align='center'></td>
         <td align='center'></td>
       </tr>
