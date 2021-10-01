@@ -11,17 +11,18 @@
 </head>
 
 <body>
-<%= render 'header' %>
+  <%= render 'header' %>
 
-<% if notice %>
-  <p class="alert alert-primary" role="alert"><%= notice %></p>
-<% end %>
-<main role="main">
-  <div class='container mx-auto'>
-    <%= yield %>
+  <% if notice %>
+    <p class="alert alert-primary" role="alert"><%= notice %></p>
+  <% end %>
 
-    <p class="mt-5 mb-3 text-muted">LIFO &copy; 2021</p>
-  </div>
-</main>
+  <main role="main">
+    <div class='container mx-auto'>
+      <%= yield %>
+
+      <p class="mt-5 mb-3 text-muted">LIFO &copy; 2021</p>
+    </div>
+  </main>
 </body>
 </html>
