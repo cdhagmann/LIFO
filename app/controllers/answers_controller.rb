@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AnswersController < ApplicationController
-  before_action :set_answer, only: [:show, :edit, :update, :destroy]
+  before_action :set_answer, only: %i[show edit update destroy]
 
   # GET /answers
   def index
@@ -7,8 +9,7 @@ class AnswersController < ApplicationController
   end
 
   # GET /answers/1
-  def show
-  end
+  def show; end
 
   # GET /answers/new
   def new
@@ -16,8 +17,7 @@ class AnswersController < ApplicationController
   end
 
   # GET /answers/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /answers
   def create
@@ -33,17 +33,14 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    if (answer_params[:question_accepted_id] != nil && Answer.exists?(question_accepted_id: answer_params[:question_accepted_id]))
+    if !answer_params[:question_accepted_id].nil? && Answer.exists?(question_accepted_id: answer_params[:question_accepted_id])
       redirect_to @answer.question
+    elsif @answer.update({ question_accepted_id: nil }.merge(answer_params))
+      redirect_to @answer.question, notice: 'Answer was successfully updated.'
     else
-      if @answer.update({question_accepted_id: nil}.merge(answer_params))
-        redirect_to @answer.question, notice: 'Answer was successfully updated.'
-      else
-        redirect_to @answer.question
-      end
+      redirect_to @answer.question
     end
   end
-
 
   # DELETE /answers/1
   # DELETE /answers/1.json
@@ -53,7 +50,6 @@ class AnswersController < ApplicationController
   end
 
   private
-
 
   # Use callbacks to share common setup or constraints between actions.
   def set_answer

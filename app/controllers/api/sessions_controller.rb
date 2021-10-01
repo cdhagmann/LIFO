@@ -1,12 +1,15 @@
-class API::SessionsController < ApplicationController
-  def create
-    user = User.find_by_username(params[:username])
+# frozen_string_literal: true
 
-    if user && user.authenticate(params[:password])
-      render json: {token: user.api_token}
-    else
-      render json: {error: "Invalid"}, status: :unauthorized
+module API
+  class SessionsController < ApplicationController
+    def create
+      user = User.find_by_username(params[:username])
+
+      if user&.authenticate(params[:password])
+        render json: { token: user.api_token }
+      else
+        render json: { error: 'Invalid' }, status: :unauthorized
+      end
     end
   end
-
 end

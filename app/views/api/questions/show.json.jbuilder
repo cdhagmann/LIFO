@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 json.links do
   json.self api_question_url(@question)
   json.list api_questions_url
   if @question.user_id == token_user.id
     json.delete do
-      json.method "DELETE"
+      json.method 'DELETE'
       json.href api_question_url(@question)
     end
   end

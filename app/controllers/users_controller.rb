@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: %i[show edit update destroy]
 
   # GET /users
   def index
@@ -9,15 +11,15 @@ class UsersController < ApplicationController
   # GET /users/
   def show
     @questions = Question.left_outer_joins(:votes).left_outer_joins(:accepted_answer).left_outer_joins(:user)
-                   .select('questions.*, 
-                            SUM(Coalesce(votes.value,0)) as vote_count, 
+                         .select('questions.*,
+                            SUM(Coalesce(votes.value,0)) as vote_count,
                             CASE WHEN max(answers.question_accepted_id) is NOT NULL THEN TRUE ELSE FALSE END as accepted,
                             MAX(users.username) as username,
                             (SELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = "questions"."id" ) as answer_count')
-                   .group(:id)
-                   .order('vote_count DESC')
-                   .order('created_At DESC')
-                   .where("questions.user_id=?", @user.id).page(params[:page]).per(10)
+                         .group(:id)
+                         .order('vote_count DESC')
+                         .order('created_At DESC')
+                         .where('questions.user_id=?', @user.id).page(params[:page]).per(10)
   end
 
   # GET /users/new
@@ -26,8 +28,7 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /users
   def create

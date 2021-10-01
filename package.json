@@ -1,5 +1,17 @@
 {
   "name": "lifo-qba",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@popperjs/core": "^2.10.2",
+    "@rails/activestorage": "^6.1.4-1",
+    "@rails/ujs": "^6.1.4-1",
+    "bootstrap": "^5.1.1",
+    "esbuild": "^0.13.3",
+    "sass": "^1.42.1"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --outdir=app/assets/builds",
+    "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+  }
 }

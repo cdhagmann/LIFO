@@ -1,25 +1,30 @@
-class API::Users::QuestionsController < ApplicationController
-  before_action :set_user, only: [:index, :show]
-  before_action :set_question, only: [:show]
+# frozen_string_literal: true
 
-  def index
-    @questions = Question.where("user_id=?",@user.id).page(params[:page]).per(10)
-  end
+module API
+  module Users
+    class QuestionsController < ApplicationController
+      before_action :set_user, only: %i[index show]
+      before_action :set_question, only: [:show]
 
-  def show
-  end
+      def index
+        @questions = Question.where('user_id=?', @user.id).page(params[:page]).per(10)
+      end
 
-    private
+      def show; end
 
-  def question_params
-    params.require(:question).permit(:body)
-  end
+      private
 
-  def set_user
-    @user = User.find(params[:user_id])
-  end
+      def question_params
+        params.require(:question).permit(:body)
+      end
 
-  def set_question
-    @question = Question.find(params[:id])
+      def set_user
+        @user = User.find(params[:user_id])
+      end
+
+      def set_question
+        @question = Question.find(params[:id])
+      end
+    end
   end
 end

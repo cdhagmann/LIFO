@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VotesController < ApplicationController
   before_action :set_vote, only: :create
 
@@ -11,7 +13,7 @@ class VotesController < ApplicationController
       end
     end
     if @vote.question.nil?
-      redirect_to question_path(@vote.answer.question, anchor: 'answer_' + @vote.answer.id.to_s)
+      redirect_to question_path(@vote.answer.question, anchor: "answer_#{@vote.answer.id}")
     else
       redirect_to question_path(@vote.question)
     end
@@ -19,11 +21,10 @@ class VotesController < ApplicationController
 
   def destroy
     @vote = Vote.find(params[:id])
+    @vote.destroy
     if @vote.question.nil?
-      @vote.destroy
-      redirect_to question_path(@vote.answer.question, anchor: 'answer_' + @vote.answer.id.to_s)
+      redirect_to question_path(@vote.answer.question, anchor: "answer_#{@vote.answer.id}")
     else
-      @vote.destroy
       redirect_to question_path(@vote.question)
     end
   end
@@ -40,10 +41,10 @@ class VotesController < ApplicationController
   end
 
   def set_vote
-    if vote_params.key?(:answer_id)
-      @vote = Vote.where(user_id: current_user.id, answer_id: vote_params[:answer_id])[0]
-    else
-      @vote = Vote.where(user_id: current_user.id, question_id: vote_params[:question_id])[0]
-    end
+    @vote = if vote_params.key?(:answer_id)
+              Vote.where(user_id: current_user.id, answer_id: vote_params[:answer_id])[0]
+            else
+              Vote.where(user_id: current_user.id, question_id: vote_params[:question_id])[0]
+            end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Answer < ApplicationRecord
   belongs_to :user
   belongs_to :question
@@ -5,7 +7,7 @@ class Answer < ApplicationRecord
   has_many :votes, dependent: :destroy
 
   def score
-    votes.map {|vote| vote.value}.inject(:+) || 0
+    votes.map(&:value).inject(:+) || 0
   end
 
   def accepted?

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 json.data do
-  json.type "questions"
+  json.type 'questions'
   json.id question.id
   json.attributes do
     json.user_id question.user_id
@@ -13,7 +15,7 @@ json.data do
         json.username question.user.username
       end
       json.links do
-          json.self api_user_url(question.user)
+        json.self api_user_url(question.user)
       end
     end
   end
@@ -22,7 +24,7 @@ json.data do
     json.list api_questions_url(question.user)
     if question.user.id == current_user.id
       json.delete do
-        json.method "DELETE"
+        json.method 'DELETE'
         json.href api_user_question_url(question.user, question)
       end
     end

@@ -1,30 +1,32 @@
+# frozen_string_literal: true
+
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: %i[show edit update destroy]
 
   # GET /questions
   def index
     session[:return_to] = root_path
     if params[:search]
       @questions = Question.left_outer_joins(:votes).left_outer_joins(:accepted_answer).left_outer_joins(:user)
-                       .select('questions.*,
-                            SUM(Coalesce(votes.value,0)) as vote_count, 
+                           .select('questions.*,
+                            SUM(Coalesce(votes.value,0)) as vote_count,
                             CASE WHEN max(answers.question_accepted_id) is NOT NULL THEN TRUE ELSE FALSE END as accepted,
                             MAX(users.username) as username,
                             (SELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = "questions"."id" ) as answer_count')
-                       .group(:id)
-                       .where(id: Question.search(params[:search]))
-                       .order('vote_count DESC')
-                       .order('created_At DESC').page(params[:page]).per(25)
+                           .group(:id)
+                           .where(id: Question.search(params[:search]))
+                           .order('vote_count DESC')
+                           .order('created_At DESC').page(params[:page]).per(25)
     else
       @questions = Question.left_outer_joins(:votes).left_outer_joins(:accepted_answer).left_outer_joins(:user)
-                       .select('questions.*,
-                            SUM(Coalesce(votes.value,0)) as vote_count, 
+                           .select('questions.*,
+                            SUM(Coalesce(votes.value,0)) as vote_count,
                             CASE WHEN max(answers.question_accepted_id) is NOT NULL THEN TRUE ELSE FALSE END as accepted,
                             MAX(users.username) as username,
                             (SELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = "questions"."id" ) as answer_count')
-                       .group(:id)
-                       .order('vote_count DESC')
-                       .order('created_At DESC').page(params[:page]).per(25)
+                           .group(:id)
+                           .order('vote_count DESC')
+                           .order('created_At DESC').page(params[:page]).per(25)
     end
   end
 
@@ -40,8 +42,7 @@ class QuestionsController < ApplicationController
   end
 
   # GET /questions/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /questions
   def create

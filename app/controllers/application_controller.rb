@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include ActionController::HttpAuthentication::Token::ControllerMethods
   protect_from_forgery with: :null_session
@@ -7,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def verify_authentication
     unless token_user
-      render json: {error: "You don't have permission to access these resources"}, status: :unauthorized
+      render json: { error: "You don't have permission to access these resources" }, status: :unauthorized
     end
   end
 
@@ -22,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def token_user
-    @token_user ||= authenticate_with_http_token do |token, options|
+    @token_user ||= authenticate_with_http_token do |token, _options|
       User.find_by_api_token(token)
     end
   end

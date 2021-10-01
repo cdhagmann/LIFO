@@ -5,13 +5,23 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <%= favicon_link_tag asset_path('favicon.png'), :rel => 'icon', :type => 'image/png' %>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  <%= stylesheet_link_tag "application" %>
 </head>
 
 <body>
-<%= yield %>
+<%= render 'header' %>
+
+<% if notice %>
+  <p class="alert alert-primary" role="alert"><%= notice %></p>
+<% end %>
+<main role="main">
+  <div class='container mx-auto'>
+    <%= yield %>
+
+    <p class="mt-5 mb-3 text-muted">LIFO &copy; 2021</p>
+  </div>
+</main>
 </body>
 </html>
