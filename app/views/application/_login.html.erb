@@ -5,10 +5,19 @@
     <%= link_to "Log Out", session_path(session), method: :delete, :class => "btn btn-danger my-2 my-sm-0" %>
   </div>
 <% else %>
-  <%= form_with(url: session_path, local: true, :html => {:class => "form-inline my-2 my-sm-0"}) do |form| %>
+  <%= form_with(url: session_path, local: true, :html => {:class => "row row-cols-lg-auto g-3 align-items-center"}) do |form| %>
+        <div class="col-12">
     <%= form.text_field :username, :class => 'form-control mr-sm-2', :placeholder => 'Username' %>
+    </div>
+          <div class="col-12">
     <%= form.password_field :password, :class => 'form-control mr-sm-2', :placeholder => 'Password' %>
+        </div>
+          <div class="col-12">
     <%= form.submit "Log In", :class => "btn btn-primary my-2 my-sm-0" %>
+        </div>
+          <div class="col-12">
     <%= link_to 'Sign Up', new_user_path, :class => "btn btn-danger my-2 my-sm-0 mx-2" %>
+        </div>
+
   <% end %>
 <% end %>
